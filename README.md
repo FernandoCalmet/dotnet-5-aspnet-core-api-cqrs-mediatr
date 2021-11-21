@@ -86,6 +86,26 @@ Dado que tenemos modelos dedicados por operación, no hay posibilidad de pérdid
 
 Lo único que puede preocupar a algunos programadores es que se trata de un patrón que exige código. En otras palabras, terminará con al menos 3 o 4 veces más líneas de código de lo que normalmente tendría. Pero todo tiene un precio. Esto, en mi opinión, es un pequeño precio a pagar mientras se obtienen las increíbles funciones y posibilidades con el patrón.
 
+### Pipelines : Descripción General
+
+¿Qué sucede internamente cuando envías una solicitud a cualquier aplicación? Idealmente devuelve la respuesta. Pero hay una cosa de la que quizás ya esté enterado: Pipelines. Ahora, estas solicitudes y respuestas viajan hacia adelante y hacia atrás a través de Pipelines en ASP.NET Core. Entonces, cuando envía una solicitud, el mensaje de solicitud pasa del usuario a través de una canalización hacia la aplicación, donde realiza la operación solicitada con el mensaje de solicitud. Una vez hecho esto, la aplicación devuelve el mensaje como respuesta a través de la canalización hacia el usuario. ¿Consíguelo? Por lo tanto, estas canalizaciones son completamente conscientes de cuál es la solicitud o la respuesta. Este también es un concepto muy importante al aprender sobre Middlewares en ASP.NET Core.
+
+Digamos que quiero validar el objeto de solicitud. ¿Como lo harias? Básicamente, escribiría las lógicas de validación que se ejecutan después de que la solicitud haya llegado al final de la canalización hacia la aplicación. Eso significa que está validando la solicitud solo después de que haya llegado al interior de la aplicación. Aunque este es un buen enfoque, pensémoslo. ¿Por qué necesita adjuntar las lógicas de validación a la aplicación, cuando ya puede validar las solicitudes entrantes incluso antes de que llegue a cualquiera de las lógicas de la aplicación? ¿Tiene sentido?
+
+Un mejor enfoque sería conectar de alguna manera sus lógicas de validación dentro de la canalización, de modo que el flujo se convierta en como el usuario envía una solicitud a través de la canalización (lógicas de validación aquí), si la solicitud es válida, presione las lógicas de la aplicación, de lo contrario lanza una excepción de validación. Esto tiene mucho sentido en términos de eficiencia, ¿verdad? ¿Por qué atacar la aplicación con datos no válidos, cuando antes podía filtrarlos?
+
+Esto no solo es aplicable para validaciones, sino para otras operaciones como registro, seguimiento de rendimiento y mucho más. Puedes ser realmente creativo al respecto.
+
+### Comportamiento De La Tubería De MediatR
+
+Volviendo a MediatR , se necesita un enfoque más de canalización en el que sus consultas, comandos y respuestas fluyen a través de una configuración de canalización de MediatR.
+
+Permítanme presentarles los comportamientos de MediatR. MediatR Pipeline Behavior se puso a disposición de la versión 3 de esta increíble biblioteca.
+
+Sabemos que estas solicitudes o comandos de MediatR son como el primer contacto dentro de nuestra aplicación, así que ¿por qué no adjuntar algunos servicios en su Pipleline?
+
+Al hacer esto, podremos ejecutar servicios / lógicas como validaciones incluso antes de que los Manejadores de Comandos o Consultas lo sepan. De esta manera, enviaremos solo las solicitudes válidas necesarias a la Implementación de CQRS. El registro y la validación mediante este comportamiento de canalización de MediatR son algunas de las implementaciones comunes.
+
 ## 📥 DEPENDENCIAS
 
 - [FluentValidation](https://www.nuget.org/packages/FluentValidation/) : FluentValidation es una biblioteca de validación para .NET que utiliza una interfaz fluida y expresiones lambda para crear reglas de validación fuertemente tipadas.
