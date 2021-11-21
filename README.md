@@ -23,6 +23,7 @@ Este proyecto es una muestra de una aplicación web API implementando el patron 
 - [x] Database migrations
 - [x] CQRS Pattern
 - [x] Mediador Pattern
+- [x] Register and Validation Pipeline Behaviour
 
 ## ⚙️ INSTALACIÓN
 
