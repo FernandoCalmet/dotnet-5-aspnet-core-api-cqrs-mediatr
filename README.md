@@ -30,7 +30,7 @@ Este proyecto es una muestra de una aplicación web API implementando el patron 
 Clonar el repositorio.
 
 ```bash
-gh repo clone FernandoCalmet/DOTNET-5-ASPNET-Core-API-CQRS-MediatR
+gh repo clone FernandoCalmet/dotnet-5-aspnet-core-api-cqrs-mediatr
 ```
 
 Crear la migración de base de datos
